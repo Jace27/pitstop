@@ -44,6 +44,14 @@ return [
             'throw' => false,
         ],
 
+        'admin' => [
+            'driver' => 'local',
+            'root' => storage_path('app/admin/public'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
     ],
 
     /*
