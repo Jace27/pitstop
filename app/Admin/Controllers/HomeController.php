@@ -14,6 +14,11 @@ class HomeController extends Controller
     {
         return $content
             ->title('Инвитро Питстоп')
-            ->description('Административная панель');
+            ->description('Административная панель')
+            ->row(function (Row $row) {
+                $row->column(12, function (Column $column) {
+                    $column->append(view('dashboard.main-page'));
+                });
+            });
     }
 }

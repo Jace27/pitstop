@@ -1,6 +1,6 @@
 <style>
     .title {
-        font-size: 50px;
+        font-size: 25px;
         color: #636b6f;
         font-family: 'Raleway', sans-serif;
         font-weight: 100;
@@ -29,4 +29,8 @@
     Административная панель Инвитро Питстоп
 </div>
 <div class="links">
+    <a href="/admin/sessions">Пользователи</a>
+    <a href="/admin/tasks">Задания</a>
+    <a href="/admin/messages">Сообщения</a>
+    <a href="/admin/actions">Действия</a>
 </div>

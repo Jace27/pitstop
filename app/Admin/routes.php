@@ -16,4 +16,9 @@ Route::group([
     $router->get('/', 'HomeController@index')->name('home');
     $router->get('/developer', 'DeveloperController@index')->name('developer-home');
 
+    $router->resource('sessions', \App\Admin\Controllers\SessionsController::class);
+    $router->resource('tasks', \App\Admin\Controllers\TasksController::class);
+    $router->resource('messages', \App\Admin\Controllers\MessagesController::class);
+    $router->resource('actions', \App\Admin\Controllers\ActionsController::class);
+
 });
