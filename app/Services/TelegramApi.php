@@ -22,19 +22,16 @@ class TelegramApi
             ]);
         }
 
-        if (empty($attachments)) {
+        if (count($attachments) != 1) {
             $params['text'] = $text;
+            $result = self::call('sendMessage', $params);
         }
         if (count($attachments) == 1) {
-            $params['text'] = $text;
-            $params[self::PHOTO_ATTACHMENT] = $attachments[0];
-        }
-
-        $result = self::call('sendMessage', $params);
-
-        if (count($attachments) > 1) {
+            $result = self::sendFile($user_id, $text, $attachments[0], $keyboard);
+        } else if (count($attachments) > 1) {
+            $result = [];
             foreach ($attachments as $attachment) {
-                self::sendFile($user_id, null, $attachment);
+                $result[] = self::sendFile($user_id, null, $attachment);
             }
         }
 

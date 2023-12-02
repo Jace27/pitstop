@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('username')->nullable();
+            $table->json('data');
             $table->integer('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -24,8 +25,8 @@ return new class extends Migration
 
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('number')->unique();
             $table->string('title')->unique();
-            $table->integer('ord')->default(100);
             $table->boolean('enabled')->default(true);
             $table->timestamps();
             $table->softDeletes();
@@ -33,9 +34,9 @@ return new class extends Migration
 
         Schema::create('bot_messages', function (Blueprint $table) {
             $table->id();
+            $table->string('slug')->unique()->nullable();
             $table->string('title')->nullable();
             $table->unsignedBigInteger('task_id')->nullable();
-            $table->integer('content_type')->default(1);
             $table->text('text_content')->nullable();
             $table->text('external_url')->nullable();
             $table->text('image')->nullable();
@@ -71,6 +72,6 @@ return new class extends Migration
         Schema::dropIfExists('actions');
         Schema::dropIfExists('bot_messages');
         Schema::dropIfExists('tasks');
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('sessions');
     }
 };

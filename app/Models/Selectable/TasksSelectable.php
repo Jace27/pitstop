@@ -2,12 +2,13 @@
 
 namespace App\Models\Selectable;
 
+use App\Models\Tasks;
 use Encore\Admin\Grid\Filter;
 use Encore\Admin\Grid\Selectable;
 
-class Tasks extends Selectable
+class TasksSelectable extends Selectable
 {
-    public $model = \App\Models\Tasks::class;
+    public $model = Tasks::class;
 
     public function make()
     {

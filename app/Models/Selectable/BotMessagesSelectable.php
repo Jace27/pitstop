@@ -5,7 +5,7 @@ namespace App\Models\Selectable;
 use App\Models\BotMessages;
 use Encore\Admin\Grid\Filter;
 
-class Messages extends \Encore\Admin\Grid\Selectable
+class BotMessagesSelectable extends \Encore\Admin\Grid\Selectable
 {
     public $model = BotMessages::class;
 

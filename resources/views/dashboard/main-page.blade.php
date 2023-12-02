@@ -33,4 +33,5 @@
     <a href="/admin/tasks">Задания</a>
     <a href="/admin/messages">Сообщения</a>
     <a href="/admin/actions">Действия</a>
+    <a href="/admin/user-answers">Ответы пользователей</a>
 </div>

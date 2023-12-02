@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Components\Structures\SessionData;
+use App\Services\Logger;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $first_name
  * @property string|null $last_name
  * @property string|null $username
+ * @property string $data
  * @property int $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -50,6 +53,8 @@ class Sessions extends BaseModel
         ];
     }
 
+    private SessionData $_jsonData;
+
     protected $table = 'sessions';
     public $timestamps = true;
     protected $fillable = [
@@ -57,11 +62,26 @@ class Sessions extends BaseModel
         'first_name',
         'last_name',
         'username',
+        'data',
         'status',
     ];
-    protected $dates = [
+    protected array $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
     ];
+
+    public function getJsonData(): SessionData
+    {
+        if (!isset($this->_jsonData)) {
+            $this->_jsonData = new SessionData($this->data);
+        }
+        return $this->_jsonData;
+    }
+
+    public function save(array $options = []): bool
+    {
+        $this->data = $this->getJsonData()->encode();
+        return parent::save($options);
+    }
 }

@@ -18,7 +18,7 @@ Route::group([
 
     $router->resource('sessions', \App\Admin\Controllers\SessionsController::class);
     $router->resource('tasks', \App\Admin\Controllers\TasksController::class);
-    $router->resource('messages', \App\Admin\Controllers\MessagesController::class);
+    $router->resource('messages', \App\Admin\Controllers\BotMessagesController::class);
     $router->resource('actions', \App\Admin\Controllers\ActionsController::class);
-
+    $router->resource('user-answers', \App\Admin\Controllers\UserAnswersController::class);
 });

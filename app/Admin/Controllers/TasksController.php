@@ -26,14 +26,14 @@ class TasksController extends AdminController
     {
         $grid = new Grid(new Tasks());
 
-        $grid->column('id', __('ID'))->sortable();
-        $grid->column('title', __('Title'))->sortable();
-        $grid->column('ord', __('Ord'))->sortable();
-        $grid->column('enabled', __('Enabled'))->sortable();
-        $grid->column('created_at', __('Created At'))->display(function ($var) {
+        $grid->column('id', __('admin.ID'))->sortable();
+        $grid->column('number', __('admin.Number'))->sortable();
+        $grid->column('title', __('admin.Title'))->sortable();
+        $grid->column('enabled', __('admin.Enabled'))->sortable();
+        $grid->column('created_at', __('admin.Created At'))->display(function ($var) {
             return date('H:i:s d.m.Y', strtotime($var));
         })->sortable();
-        $grid->column('updated_at', __('Updated At'))->display(function ($var) {
+        $grid->column('updated_at', __('admin.Updated At'))->display(function ($var) {
             return date('H:i:s d.m.Y', strtotime($var));
         })->sortable();
 
@@ -50,12 +50,12 @@ class TasksController extends AdminController
     {
         $show = new Show(Tasks::findOrFail($id));
 
-        $show->field('id', __('ID'));
-        $show->field('title', __('Title'));
-        $show->field('ord', __('Ord'));
-        $show->field('enabled', __('Enabled'));
-        $show->field('created_at', __('Created At'));
-        $show->field('updated_at', __('Updated At'));
+        $show->field('id', __('admin.ID'));
+        $show->field('number', __('admin.Number'));
+        $show->field('title', __('admin.Title'));
+        $show->field('enabled', __('admin.Enabled'));
+        $show->field('created_at', __('admin.Created At'));
+        $show->field('updated_at', __('admin.Updated At'));
 
         return $show;
     }
@@ -69,9 +69,9 @@ class TasksController extends AdminController
     {
         $form = new Form(new Tasks());
 
-        $form->text('title', __('Title'));
-        $form->number('ord', __('Ord'))->default(100);
-        $form->switch('enabled', __('Enabled'))->default(1);
+        $form->number('number', __('admin.Number'));
+        $form->text('title', __('admin.Title'));
+        $form->switch('enabled', __('admin.Enabled'))->default(1);
 
         return $form;
     }

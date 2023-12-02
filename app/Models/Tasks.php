@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * App\Models\Tasks
  *
  * @property int $id
+ * @property int $number
  * @property string $title
- * @property int $ord
  * @property int $enabled
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Tasks whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tasks whereEnabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tasks whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Tasks whereOrd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tasks whereNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tasks whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tasks whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tasks withTrashed()
@@ -41,8 +41,8 @@ class Tasks extends BaseModel
     protected $table = 'tasks';
     public $timestamps = true;
     protected $fillable = [
+        'number',
         'title',
-        'ord',
         'enabled',
     ];
     protected $dates = [
@@ -54,5 +54,11 @@ class Tasks extends BaseModel
     public function messages(): HasMany
     {
         return $this->hasMany(BotMessages::class, 'task_id', 'id');
+    }
+
+    public function getStartMessage(): ?BotMessages
+    {
+        $slug = 'task_'.$this->number.'_start';
+        return BotMessages::whereSlug($slug)->first();
     }
 }

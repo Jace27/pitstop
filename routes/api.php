@@ -18,4 +18,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/api/telegram', [\App\Http\Controllers\ApiController::class, 'handle']);
+Route::any('/telegram', [\App\Http\Controllers\ApiController::class, 'handle']);
