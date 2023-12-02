@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $username
  * @property string $data
  * @property int $status
+ * @property boolean $is_admin
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -64,6 +65,7 @@ class Sessions extends BaseModel
         'username',
         'data',
         'status',
+        'is_admin',
     ];
     protected array $dates = [
         'created_at',

@@ -135,4 +135,5 @@ return [
     'Answer'                => 'Ответ',
     'Correct'               => 'Правильный',
     'Telegram ID'           => 'ID Телеграма',
+    'Is Admin'              => 'Администратор',
 ];

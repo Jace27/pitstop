@@ -40,6 +40,7 @@ class SessionsController extends AdminController
 
         $grid->column('id', __('admin.ID'))->sortable();
         $grid->column('external_id', __('admin.Telegram ID'))->sortable();
+        $grid->column('is_admin', __('admin.Is Admin'))->select([0 => 'Нет', 1 => 'Да'])->sortable();
         $grid->column('first_name', __('admin.First Name'))->sortable();
         $grid->column('last_name', __('admin.Last Name'))->sortable();
         $grid->column('username', __('admin.Username'))->sortable();
@@ -66,6 +67,7 @@ class SessionsController extends AdminController
 
         $show->field('id', __('admin.ID'));
         $show->field('external_id', __('admin.Telegram ID'));
+        $show->field('is_admin', __('admin.Is Admin'));
         $show->field('first_name', __('admin.First Name'));
         $show->field('last_name', __('admin.Last Name'));
         $show->field('username', __('admin.Username'));
@@ -87,6 +89,7 @@ class SessionsController extends AdminController
 
         $form->display('id', __('admin.ID'))->disable();
         $form->text('external_id', __('admin.Telegram ID'));
+        $form->select('is_admin', __('admin.Is Admin'))->options([0 => 'Нет', 1 => 'Да']);
         $form->text('first_name', __('admin.First Name'));
         $form->text('last_name', __('admin.Last Name'));
         $form->text('username', __('admin.Username'));

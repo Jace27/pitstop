@@ -9,6 +9,8 @@ use App\Models\BotMessages;
 use App\Models\Sessions;
 use App\Models\UserAnswers;
 use App\Services\Logger;
+use App\Services\Notifications;
+use App\Services\TelegramApi;
 use Illuminate\Http\Request;
 
 class Bot
@@ -54,6 +56,15 @@ class Bot
             $answer->save();
 
             $currentMessage = $currentMessage->next_message ?? $currentMessage;
+
+            Notifications::notificate(
+                Notifications::NEW_ANSWER,
+                [
+                    '{{USER}}' => $answer->user->username,
+                    '{{DATETIME}}' => date('H:i:s d.m.Y', strtotime($answer->created_at)),
+                    '{{ANSWER}}' => $answer->answer,
+                ]
+            );
         }
 
         $this->user->getJsonData()->message_id = $currentMessage->id;

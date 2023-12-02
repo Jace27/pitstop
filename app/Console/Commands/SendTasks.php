@@ -29,7 +29,7 @@ class SendTasks extends Command
     public function handle()
     {
         $sent = 0;
-        foreach (Sessions::whereStatus(Sessions::STATUS_ACTIVE)->get() as $user) {
+        foreach (Sessions::whereStatus(Sessions::STATUS_ACTIVE)->where('is_admin', '=', false)->get() as $user) {
             $currentMessage = BotMessages::whereId($user->getJsonData()->message_id)->first();
             if (is_null($currentMessage)) continue;
 
