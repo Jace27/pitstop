@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\DelayedMessages;
+use App\Services\Logger;
 use Illuminate\Console\Command;
 
 class SendDelayedMessages extends Command
@@ -37,6 +38,8 @@ class SendDelayedMessages extends Command
             $message->save();
             $sent++;
         }
-        echo 'Sent '.$sent.' messages';
+        $echo = 'Sent '.$sent.' messages';
+        Logger::log($echo);
+        echo $echo;
     }
 }

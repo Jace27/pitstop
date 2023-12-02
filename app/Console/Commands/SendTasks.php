@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\BotMessages;
 use App\Models\Sessions;
 use App\Models\Tasks;
+use App\Services\Logger;
 use Illuminate\Console\Command;
 
 class SendTasks extends Command
@@ -46,6 +47,8 @@ class SendTasks extends Command
 
             $sent++;
         }
-        echo 'Sent '.$sent.' messages';
+        $echo = 'Sent '.$sent.' messages';
+        Logger::log($echo);
+        echo $echo;
     }
 }
