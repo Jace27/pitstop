@@ -34,7 +34,8 @@ class SendTasks extends Command
             $currentMessage = BotMessages::whereId($user->getJsonData()->message_id)->first();
             if (is_null($currentMessage)) continue;
 
-            $taskNumber = $currentMessage->task?->number ?? 1;
+            $taskNumber = $currentMessage->task?->number ?? 0;
+            $taskNumber++;
             $task = Tasks::whereNumber($taskNumber)->first();
             if (is_null($task)) continue;
 
