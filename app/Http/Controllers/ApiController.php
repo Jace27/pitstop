@@ -38,6 +38,8 @@ class ApiController extends Controller
                 TelegramApi::removeKeyboard($json['message']['chat']['id'], $json['message']['message_id']);
             }
 
+            if ($user->status == Sessions::STATUS_BANNED) return 'ok';
+
             $bot = new Bot($request, $user, new BotInput($inputText, $inputButton));
             $message = $bot->handle();
             $message->send($user->external_id);
@@ -50,6 +52,8 @@ class ApiController extends Controller
             if (isset($user)) {
                 $message = BotMessages::whereSlug(BotMessages::SLUG_ERROR)->first();
                 $message->send($user->external_id);
+                $user->getJsonData()->message_id = $message->id;
+                $user->save();
             }
         }
         return 'ok';

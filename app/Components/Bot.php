@@ -60,9 +60,9 @@ class Bot
             Notifications::notificate(
                 Notifications::NEW_ANSWER,
                 [
-                    '{{USER}}' => $answer->user->username,
-                    '{{DATETIME}}' => date('H:i:s d.m.Y', strtotime($answer->created_at)),
-                    '{{ANSWER}}' => $answer->answer,
+                    '{{USER}}'      => $answer->user->username,
+                    '{{DATETIME}}'  => date('H:i:s d.m.Y', strtotime($answer->created_at)),
+                    '{{ANSWER}}'    => $answer->answer,
                 ]
             );
         }
