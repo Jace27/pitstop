@@ -5,9 +5,11 @@ namespace App\Components\Structures;
 class SessionData
 {
     public $message_id;
+    public $last_task_id;
 
     private array $fields = [
         'message_id',
+        'last_task_id',
     ];
 
     public function __construct(string $data)
