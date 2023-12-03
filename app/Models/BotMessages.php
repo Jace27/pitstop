@@ -52,14 +52,18 @@ class BotMessages extends BaseModel
 {
     use HasFactory;
 
-    const SLUG_START = 'start';
     const SLUG_ERROR = 'error';
+    const SLUG_START = 'start';
+    const SLUG_ALL_TASKS_DONE = 'all_tasks_done';
+    const SLUG_ALL_TASKS_DONE_RIGHT = 'all_tasks_done_right';
 
     public static function getSlugs(): array
     {
         $slugs = [
-            self::SLUG_START => 'Старт бота',
             self::SLUG_ERROR => 'Ошибка',
+            self::SLUG_START => 'Старт бота',
+            self::SLUG_ALL_TASKS_DONE => 'Все задания выполнены',
+            self::SLUG_ALL_TASKS_DONE_RIGHT => 'Все задания выполнены верно',
         ];
         foreach (Tasks::query()->get() as $task) {
             $slugs['task_'.$task->number.'_start'] = 'Старт задания '.$task->number;

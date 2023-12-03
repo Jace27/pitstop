@@ -86,4 +86,15 @@ class Sessions extends BaseModel
         $this->data = $this->getJsonData()->encode();
         return parent::save($options);
     }
+
+    public function getAnswersCount(?bool $right = null): int
+    {
+        return UserAnswers::query()
+            ->join('bot_messages', 'user_answers.message_id', '=', 'bot_messages.id')
+            ->whereUserId($this->id)
+            ->where('correct', 'in', is_null($right) ? [false,true] : $right)
+            ->where('bot_messages.task_id', 'not', null)
+            ->groupBy('bot_messages.task_id')
+            ->count();
+    }
 }
