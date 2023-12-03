@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\SendTasksDoneAction;
 use App\Models\Sessions;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -34,7 +35,7 @@ class SessionsController extends AdminController
      *
      * @return Grid
      */
-    protected function grid()
+    protected function grid(): Grid
     {
         $grid = new Grid(new Sessions());
 
@@ -45,12 +46,24 @@ class SessionsController extends AdminController
         $grid->column('last_name', __('admin.Last Name'))->sortable();
         $grid->column('username', __('admin.Username'))->sortable();
         $grid->column('status', __('admin.Status'))->select(Sessions::getStatuses())->sortable();
+        $grid->column('answersCount', __('admin.Answers count'))->display(function () {
+            /** @var Sessions $this */
+            return $this->getAnswersCount();
+        });
+        $grid->column('rightAnswersCount', __('admin.Right answers count'))->display(function () {
+            /** @var Sessions $this */
+            return $this->getAnswersCount(true);
+        });
         $grid->column('created_at', __('admin.Created At'))->display(function ($var) {
             return date('H:i:s d.m.Y', strtotime($var));
         })->sortable();
         $grid->column('updated_at', __('admin.Updated At'))->display(function ($var) {
             return date('H:i:s d.m.Y', strtotime($var));
         })->sortable();
+
+        $grid->actions(function (Grid\Displayers\DropdownActions $actions) {
+            $actions->add(new SendTasksDoneAction());
+        });
 
         return $grid;
     }
@@ -61,7 +74,7 @@ class SessionsController extends AdminController
      * @param mixed   $id
      * @return Show
      */
-    protected function detail($id)
+    protected function detail($id): Show
     {
         $show = new Show(Sessions::findOrFail($id));
 
@@ -83,7 +96,7 @@ class SessionsController extends AdminController
      *
      * @return Form
      */
-    protected function form()
+    protected function form(): Form
     {
         $form = new Form(new Sessions);
 

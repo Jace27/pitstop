@@ -136,4 +136,9 @@ return [
     'Correct'               => 'Правильный',
     'Telegram ID'           => 'ID Телеграма',
     'Is Admin'              => 'Администратор',
+    'Answers count'         => 'Кол-во выполненных заданий',
+    'Right answers count'   => 'Кол-во правильно выполненных заданий',
+    'Send tasks done message' => 'Все задания выполнены',
+    'User hasn\'t done all tasks yet' => 'Пользователь еще не выполнил все задания',
+    'Message sent'          => 'Сообщение отправлено',
 ];

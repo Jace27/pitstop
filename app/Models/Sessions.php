@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Components\Structures\SessionData;
 use App\Services\Logger;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -89,12 +90,15 @@ class Sessions extends BaseModel
 
     public function getAnswersCount(?bool $right = null): int
     {
-        return UserAnswers::query()
+        $query = UserAnswers::query()
             ->join('bot_messages', 'user_answers.message_id', '=', 'bot_messages.id')
             ->whereUserId($this->id)
-            ->where('correct', 'in', is_null($right) ? [false,true] : $right)
-            ->where('bot_messages.task_id', 'not', null)
-            ->groupBy('bot_messages.task_id')
-            ->count();
+            ->where(function (Builder $query) use ($right) {
+                $query->orWhereIn('correct', is_null($right) ? [false,true] : [$right]);
+                if (!$right) $query->orWhereNull('correct');
+            })
+            ->whereNot('bot_messages.task_id')
+            ->groupBy('bot_messages.task_id');
+        return $query->count();
     }
 }
