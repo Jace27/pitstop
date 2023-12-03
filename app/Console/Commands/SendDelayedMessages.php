@@ -33,9 +33,17 @@ class SendDelayedMessages extends Command
             ->get();
         $sent = 0;
         foreach ($messages as $message) {
-            $message->message->send($message->user->external_id);
-            $message->sent_at = date('Y-m-d H:i:s');
-            $message->save();
+            try {
+                $message->message->send($message->user->external_id);
+                $message->sent_at = date('Y-m-d H:i:s');
+                $message->save();
+            } catch (\Throwable $ex) {
+                Logger::error([
+                    'message' => $ex->getMessage(),
+                    'file' => $ex->getFile() . ':' . $ex->getLine(),
+                    'trace' => $ex->getTraceAsString(),
+                ]);
+            }
             $sent++;
         }
         $echo = 'Sent '.$sent.' messages';

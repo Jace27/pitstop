@@ -31,32 +31,40 @@ class SendTasks extends Command
     {
         $sent = 0;
         foreach (Sessions::whereStatus(Sessions::STATUS_ACTIVE)->where('is_admin', '=', false)->get() as $user) {
-            $currentMessage = BotMessages::whereId($user->getJsonData()->message_id)->first();
-            if (is_null($currentMessage)) continue;
+            try {
+                $currentMessage = BotMessages::whereId($user->getJsonData()->message_id)->first();
+                if (is_null($currentMessage)) continue;
 
-            $taskNumber = ($user->getJsonData()->last_task_id ?? $currentMessage->task?->number) ?? 0;
-            $taskNumber++;
-            $task = Tasks::whereNumber($taskNumber)->first();
-            if (is_null($task)) {
-                $tasksCount = Tasks::query()->count();
-                if ($tasksCount == $user->getAnswersCount(true)) {
-                    $message = BotMessages::whereSlug(BotMessages::SLUG_ALL_TASKS_DONE_RIGHT)->first();
-                } else if ($tasksCount == $user->getAnswersCount()) {
-                    $message = BotMessages::whereSlug(BotMessages::SLUG_ALL_TASKS_DONE)->first();
-                } else continue;
-                $message?->send($user->external_id);
-            } else {
-                $message = $task->getStartMessage();
-                if (is_null($message)) continue;
-                $message->send($user->external_id);
-                $user->getJsonData()->last_task_id = $task->id;
+                $taskNumber = ($user->getJsonData()->last_task_id ?? $currentMessage->task?->number) ?? 0;
+                $taskNumber++;
+                $task = Tasks::whereNumber($taskNumber)->first();
+                if (is_null($task)) {
+                    $tasksCount = Tasks::query()->count();
+                    if ($tasksCount == $user->getAnswersCount(true)) {
+                        $message = BotMessages::whereSlug(BotMessages::SLUG_ALL_TASKS_DONE_RIGHT)->first();
+                    } else if ($tasksCount == $user->getAnswersCount()) {
+                        $message = BotMessages::whereSlug(BotMessages::SLUG_ALL_TASKS_DONE)->first();
+                    } else continue;
+                    $message?->send($user->external_id);
+                } else {
+                    $message = $task->getStartMessage();
+                    if (is_null($message)) continue;
+                    $message->send($user->external_id);
+                    $user->getJsonData()->last_task_id = $task->id;
+                }
+                $user->getJsonData()->message_id = $message->id;
+                $user->save();
+            } catch (\Throwable $ex) {
+                Logger::error([
+                    'message' => $ex->getMessage(),
+                    'file' => $ex->getFile() . ':' . $ex->getLine(),
+                    'trace' => $ex->getTraceAsString(),
+                ]);
             }
-            $user->getJsonData()->message_id = $message->id;
-            $user->save();
 
             $sent++;
         }
-        $echo = 'Sent '.$sent.' messages';
+        $echo = 'Sent ' . $sent . ' messages';
         Logger::log($echo);
         echo $echo;
     }
