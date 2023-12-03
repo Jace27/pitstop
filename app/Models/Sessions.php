@@ -88,7 +88,7 @@ class Sessions extends BaseModel
         return parent::save($options);
     }
 
-    public function getAnswersCount(?bool $right = null): int
+    public function getTasksAnswersCount(?bool $right = null): int
     {
         $query = UserAnswers::query()
             ->join('bot_messages', 'user_answers.message_id', '=', 'bot_messages.id')
@@ -97,8 +97,7 @@ class Sessions extends BaseModel
                 $query->orWhereIn('correct', is_null($right) ? [false,true] : [$right]);
                 if (!$right) $query->orWhereNull('correct');
             })
-            ->whereNot('bot_messages.task_id')
-            ->groupBy('bot_messages.task_id');
+            ->whereNotNull('bot_messages.task_id');
         return $query->count();
     }
 }

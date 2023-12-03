@@ -21,9 +21,9 @@ class SendTasksDoneAction extends \Encore\Admin\Actions\RowAction
     {
         $tasksCount = Tasks::query()->count();
 
-        if ($tasksCount == $user->getAnswersCount(true)) {
+        if ($tasksCount == $user->getTasksAnswersCount(true)) {
             $message = BotMessages::whereSlug(BotMessages::SLUG_ALL_TASKS_DONE_RIGHT)->first();
-        } else if ($tasksCount == $user->getAnswersCount()) {
+        } else if ($tasksCount == $user->getTasksAnswersCount()) {
             $message = BotMessages::whereSlug(BotMessages::SLUG_ALL_TASKS_DONE)->first();
         } else {
             return $this->response()->error(__('User hasn\'t done all tasks yet'))->refresh();

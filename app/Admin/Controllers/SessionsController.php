@@ -48,11 +48,11 @@ class SessionsController extends AdminController
         $grid->column('status', __('admin.Status'))->select(Sessions::getStatuses())->sortable();
         $grid->column('answersCount', __('admin.Answers count'))->display(function () {
             /** @var Sessions $this */
-            return $this->getAnswersCount();
+            return $this->getTasksAnswersCount();
         });
         $grid->column('rightAnswersCount', __('admin.Right answers count'))->display(function () {
             /** @var Sessions $this */
-            return $this->getAnswersCount(true);
+            return $this->getTasksAnswersCount(true);
         });
         $grid->column('created_at', __('admin.Created At'))->display(function ($var) {
             return date('H:i:s d.m.Y', strtotime($var));
