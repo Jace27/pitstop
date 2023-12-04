@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\BotMessages;
 use App\Models\Sessions;
 use App\Models\Tasks;
+use App\Models\UserAnswers;
 use App\Services\Logger;
 use Illuminate\Console\Command;
 
@@ -36,12 +37,28 @@ class SendTasks extends Command
                 if (is_null($currentMessage)) continue;
 
                 $taskNumber = ($user->getJsonData()->last_task_id ?? $currentMessage->task?->number) ?? 0;
+
+                if ($taskNumber > 0) {
+                    $task = Tasks::whereNumber($taskNumber)->first();
+                    $questions = BotMessages::whereTaskId($task?->id)->whereWaitAnswer(true)->get();
+                    $taskDone = true;
+                    foreach ($questions as $question) {
+                        if (!UserAnswers::whereUserId($user->id)->whereMessageId($question->id)->exists()) {
+                            $taskDone = false;
+                        }
+                    }
+                    if (!$taskDone) continue;
+                }
+
                 $taskNumber++;
                 $task = Tasks::whereNumber($taskNumber)->first();
                 if (is_null($task)) continue;
+
                 $message = $task->getStartMessage();
                 if (is_null($message)) continue;
+
                 $message->send($user->external_id);
+
                 $user->getJsonData()->last_task_id = $task->id;
                 $user->getJsonData()->message_id = $message->id;
                 $user->save();
