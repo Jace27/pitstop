@@ -141,4 +141,7 @@ return [
     'Send tasks done message' => 'Все задания выполнены',
     'User hasn\'t done all tasks yet' => 'Пользователь еще не выполнил все задания',
     'Message sent'          => 'Сообщение отправлено',
+    'Restore'               => 'Восстановить',
+    'Restored'              => 'Восстановлено',
+    'Recycle Bin'           => 'Корзина'
 ];

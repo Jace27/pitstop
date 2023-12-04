@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\RestoreAction;
 use App\Admin\Actions\SendTasksDoneAction;
 use App\Models\Sessions;
 use Encore\Admin\Controllers\AdminController;
@@ -62,7 +63,14 @@ class SessionsController extends AdminController
         })->sortable();
 
         $grid->actions(function (Grid\Displayers\DropdownActions $actions) {
+            if ($actions->row->deleted_at) {
+                $actions->add(new RestoreAction());
+            }
             $actions->add(new SendTasksDoneAction());
+        });
+
+        $grid->filter(function (Grid\Filter $filter) {
+            $filter->scope('trashed', __('admin.Recycle Bin'))->onlyTrashed();
         });
 
         return $grid;

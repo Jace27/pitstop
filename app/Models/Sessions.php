@@ -100,4 +100,17 @@ class Sessions extends BaseModel
             ->whereNotNull('bot_messages.task_id');
         return $query->count();
     }
+
+    public function getNotTasksAnswersCount(?bool $right = null): int
+    {
+        $query = UserAnswers::query()
+            ->join('bot_messages', 'user_answers.message_id', '=', 'bot_messages.id')
+            ->whereUserId($this->id)
+            ->where(function (Builder $query) use ($right) {
+                $query->orWhereIn('correct', is_null($right) ? [false,true] : [$right]);
+                if (!$right) $query->orWhereNull('correct');
+            })
+            ->whereNull('bot_messages.task_id');
+        return $query->count();
+    }
 }
