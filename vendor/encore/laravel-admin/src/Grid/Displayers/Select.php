@@ -12,7 +12,7 @@ class Select extends AbstractDisplayer
         return Admin::component('admin::grid.inline-edit.select', [
             'key'      => $this->getKey(),
             'value'    => $this->getValue(),
-            'display'  => Arr::get($options, $this->getValue(), ''),
+            'display'  => Arr::get($options, $this->getValue() ?? 0, ''),
             'name'     => $this->getPayloadName(),
             'resource' => $this->getResource(),
             'trigger'  => "ie-trigger-{$this->getClassName()}",
